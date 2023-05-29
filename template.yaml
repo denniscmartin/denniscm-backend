@@ -1,0 +1,145 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: API for denniscm.com
+
+Conditions:
+  CreateProdResources: !Equals
+    - !Ref AWS::AccountId
+    - 672477575715 # General account ID (Production)
+
+Globals:
+  Function:
+    Runtime: python3.7
+    Handler: app.lambda_handler
+    Architectures:
+      - x86_64
+    Timeout: 30
+    MemorySize: 128
+    Tracing: Active
+
+Resources:
+  RestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'GET, POST, OPTIONS'"
+        AllowHeaders: "'content-type, x-api-key'"
+        AllowOrigin: "'*'"
+      Models:
+        Empty:
+          type: object
+
+  DennisCmBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !If
+        - CreateProdResources
+        - denniscm-data
+        - sandbox-denniscm-data
+
+  IndexObjectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: index_object/
+      Events:
+        NewBlogPostEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref DennisCmBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: inbox/
+    Connectors:
+      DynamoConnector:
+        Properties:
+          Destination:
+            Id: IndexTable
+          Permissions:
+            - Write
+      S3Connector:
+        Properties:
+          Destination:
+            Id: DennisCmBucket
+          Permissions:
+            - Read
+            - Write
+
+  ListPostsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: list_posts/
+      Events:
+        GetPostsEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /listposts
+            Method: get
+    Connectors:
+      DynamoConnector:
+        Properties:
+          Destination:
+            Id: IndexTable
+          Permissions:
+            - Read
+
+  DownloadObjectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: download_object/
+      Environment:
+        Variables:
+          BUCKET_NAME: !If
+            - CreateProdResources
+            - denniscm-data
+            - sandbox-denniscm-data
+      Events:
+        GetPostEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /download
+            Method: get
+            RequestParameters:
+              - method.request.querystring.object-key:
+                  Required: true
+            RequestModel:
+              Model: Empty
+              ValidateParameters: true
+    Connectors:
+      DynamoConnector:
+        Properties:
+          Destination:
+            Id: IndexTable
+          Permissions:
+            - Read
+
+  IndexTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: DennisCmIndex
+      BillingMode: PAY_PER_REQUEST
+      DeletionProtectionEnabled: True
+      KeySchema:
+        - AttributeName: item_key
+          KeyType: HASH
+        - AttributeName: item_name
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: item_key
+          AttributeType: S
+        - AttributeName: item_name
+          AttributeType: S
+
+Outputs:
+  ListPostsEndpoint:
+    Description: "Endpoint to get posts"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/listposts"
+
+  DownloadObjectEndpoint:
+    Description: "Endpoint to generate a presigned url to download an object"
+    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/download"
