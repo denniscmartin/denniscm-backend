@@ -134,6 +134,13 @@ Resources:
           AttributeType: S
         - AttributeName: item_name
           AttributeType: S
+      GlobalSecondaryIndexes:
+        - IndexName: gsiItemName
+          KeySchema:
+            - AttributeName: item_name
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
 
 Outputs:
   ListPostsEndpoint:

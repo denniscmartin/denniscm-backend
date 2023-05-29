@@ -1,14 +1,17 @@
 import json
 import boto3
+from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('DennisCmIndex')
 
 
 def lambda_handler(event, context):
-    r = table.scan()
+    r = table.scan(
+        FilterExpression=Key('item_name').begins_with('post::')
+    )
+
     items = r['Items']
-    print(f'NUMBER OF ITEMS: {len(items)}')
 
     return {
         "statusCode": 200,

@@ -45,6 +45,11 @@ def lambda_handler(event, context):
             print('Indexing object')
 
             filename = s3_object_key.split('/', 1)[1]
+            if file_ext == 'txt':
+                filename = f'post::{filename}'
+            else:
+                filename = f'image::{filename}'
+
             created_at = str(date.today())
             dynamo_table.put_item(
                 Item={
