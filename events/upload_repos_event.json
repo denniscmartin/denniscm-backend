@@ -7,163 +7,190 @@
           "id": 370688619,
           "name": "bazooka",
           "description": "An experiment on Swift networking",
-          "url": "https://api.github.com/repos/denniscmartin/bazooka"
+          "url": "https://github.com/denniscmartin/bazooka",
+          "created_at": "2021-05-25T12:41:26Z"
         },
         {
           "id": 415279739,
           "name": "bitcaviar",
           "description": "A simple Python wrapper for Bitcoin JSON-RPC API",
-          "url": "https://api.github.com/repos/denniscmartin/bitcaviar"
+          "url": "https://github.com/denniscmartin/bitcaviar",
+          "created_at": "2021-10-09T10:44:09Z"
         },
         {
           "id": 421331557,
           "name": "bitcaviar-plus",
           "description": "A Bitcoin blockchain parser written in Python",
-          "url": "https://api.github.com/repos/denniscmartin/bitcaviar-plus"
+          "url": "https://github.com/denniscmartin/bitcaviar-plus",
+          "created_at": "2021-10-26T07:52:59Z"
         },
         {
           "id": 516015548,
           "name": "cali-concept",
           "description": "Just testing a new idea",
-          "url": "https://api.github.com/repos/denniscmartin/cali-concept"
+          "url": "https://github.com/denniscmartin/cali-concept",
+          "created_at": "2022-07-20T14:29:48Z"
         },
         {
           "id": 384961036,
           "name": "currency-flags",
           "description": "Country flags for currencies",
-          "url": "https://api.github.com/repos/denniscmartin/currency-flags"
+          "url": "https://github.com/denniscmartin/currency-flags",
+          "created_at": "2021-07-11T13:54:26Z"
         },
         {
           "id": 646923197,
           "name": "denniscm-backend",
           "description": "Serverless app for my website to interact with third-party APIs suchs as Github. Developed with Python using AWS Secrets Manager, AWS SAM, AWS Api Gateway, AWS Step Functions, AWS EventBridge Scheduler, AWS DynamoDb",
-          "url": "https://api.github.com/repos/denniscmartin/denniscm-backend"
+          "url": "https://github.com/denniscmartin/denniscm-backend",
+          "created_at": "2023-05-29T16:45:56Z"
         },
         {
           "id": 651199888,
           "name": "denniscm-frontend",
           "description": "The frontend for denniscm.com. Developed in VueJs and hosted in a S3 bucket behind a Cloudfront distribution",
-          "url": "https://api.github.com/repos/denniscmartin/denniscm-frontend"
+          "url": "https://github.com/denniscmartin/denniscm-frontend",
+          "created_at": "2023-06-08T18:13:45Z"
         },
         {
           "id": 570597267,
           "name": "dt-photopicker",
           "description": "A generic implementation of a photo picker in SwiftUI using PhotosUI",
-          "url": "https://api.github.com/repos/denniscmartin/dt-photopicker"
+          "url": "https://github.com/denniscmartin/dt-photopicker",
+          "created_at": "2022-11-25T15:19:19Z"
         },
         {
           "id": 571571858,
           "name": "dt-roundedcorners",
           "description": "A SwiftUI library to round specific corners of shapes",
-          "url": "https://api.github.com/repos/denniscmartin/dt-roundedcorners"
+          "url": "https://github.com/denniscmartin/dt-roundedcorners",
+          "created_at": "2022-11-28T12:26:52Z"
         },
         {
           "id": 574419942,
           "name": "dt-viewstack",
           "description": "A SwiftUI library to stack two views like the Apple Maps app",
-          "url": "https://api.github.com/repos/denniscmartin/dt-viewstack"
+          "url": "https://github.com/denniscmartin/dt-viewstack",
+          "created_at": "2022-12-05T09:18:05Z"
         },
         {
           "id": 648770460,
           "name": "finance-parser",
           "description": "Serverless parser to extract information from financial reports using AWS Step Functions, AWS S3, AWS Api Gateway, AWS Textract, AWS DynamoDB and Eventbridge",
-          "url": "https://api.github.com/repos/denniscmartin/finance-parser"
+          "url": "https://github.com/denniscmartin/finance-parser",
+          "created_at": "2023-06-02T19:13:01Z"
         },
         {
           "id": 649825121,
           "name": "finance-parser-frontend",
           "description": "Frontend for the finance-parser project. Developed with VueJs and hosted in a S3 Bucket behind a Cloudfront distribution",
-          "url": "https://api.github.com/repos/denniscmartin/finance-parser-frontend"
+          "url": "https://github.com/denniscmartin/finance-parser-frontend",
+          "created_at": "2023-06-05T18:09:39Z"
         },
         {
           "id": 538835914,
           "name": "geoquiz-app",
           "description": "A geography game for iOS written in SwiftUI",
-          "url": "https://api.github.com/repos/denniscmartin/geoquiz-app"
+          "url": "https://github.com/denniscmartin/geoquiz-app",
+          "created_at": "2022-09-20T06:11:50Z"
         },
         {
           "id": 484802143,
           "name": "k8s-manifests",
           "description": "Kubernetes config files for the Maki project",
-          "url": "https://api.github.com/repos/denniscmartin/k8s-manifests"
+          "url": "https://github.com/denniscmartin/k8s-manifests",
+          "created_at": "2022-04-23T16:40:56Z"
         },
         {
           "id": 327059339,
           "name": "lazybear",
           "description": "My first iOS app and programming project",
-          "url": "https://api.github.com/repos/denniscmartin/lazybear"
+          "url": "https://github.com/denniscmartin/lazybear",
+          "created_at": "2021-01-05T16:42:51Z"
         },
         {
           "id": 482549590,
           "name": "maki-api",
           "description": "An API for the Maki project to let users interact with the database. Developed using Python (Flask) and deployed in a Docker container to a Kubernetes cluster hosted in DigitalOcean",
-          "url": "https://api.github.com/repos/denniscmartin/maki-api"
+          "url": "https://github.com/denniscmartin/maki-api",
+          "created_at": "2022-04-17T14:44:07Z"
         },
         {
           "id": 489071543,
           "name": "maki-auth",
           "description": "A microservice for the Maki project to handle user authentication. Developer using Python (Flask) and deployed in a Docker container to a Kubernetes cluster hosted in DigitalOcean",
-          "url": "https://api.github.com/repos/denniscmartin/maki-auth"
+          "url": "https://github.com/denniscmartin/maki-auth",
+          "created_at": "2022-05-05T17:44:05Z"
         },
         {
           "id": 509499093,
           "name": "maki-explorer",
           "description": "The explorer frontend for the Maki project. Developed using Python and deployed in a Docker container to a K8s cluster hosted in DigitalOcean",
-          "url": "https://api.github.com/repos/denniscmartin/maki-explorer"
+          "url": "https://github.com/denniscmartin/maki-explorer",
+          "created_at": "2022-07-01T15:12:35Z"
         },
         {
           "id": 510427457,
           "name": "maki-stripe",
           "description": "A microservice for the Maki project to handle incoming Stripe webhooks. Developed using Python (Flask) and deployed in a Docker container to a Kubernetes cluster hosted in DigitalOcean",
-          "url": "https://api.github.com/repos/denniscmartin/maki-stripe"
+          "url": "https://github.com/denniscmartin/maki-stripe",
+          "created_at": "2022-07-04T16:18:39Z"
         },
         {
           "id": 469337956,
           "name": "maki-web",
           "description": "The frontend for the Maki project. Developed using Python (Flask) and deployed in a Docker container to a Kubenetes cluster hosted in DigitalOcean",
-          "url": "https://api.github.com/repos/denniscmartin/maki-web"
+          "url": "https://github.com/denniscmartin/maki-web",
+          "created_at": "2022-03-13T10:29:15Z"
         },
         {
           "id": 552406756,
           "name": "maze-solver",
           "description": "A maze solver written in C",
-          "url": "https://api.github.com/repos/denniscmartin/maze-solver"
+          "url": "https://github.com/denniscmartin/maze-solver",
+          "created_at": "2022-10-16T14:23:46Z"
         },
         {
           "id": 439632769,
           "name": "moness",
           "description": "An investment tracker app for iOS written in SwiftUI",
-          "url": "https://api.github.com/repos/denniscmartin/moness"
+          "url": "https://github.com/denniscmartin/moness",
+          "created_at": "2021-12-18T14:15:04Z"
         },
         {
           "id": 384964977,
           "name": "simoleon",
           "description": "A currency converter app for iOS written in SwiftUI",
-          "url": "https://api.github.com/repos/denniscmartin/simoleon"
+          "url": "https://github.com/denniscmartin/simoleon",
+          "created_at": "2021-07-11T14:12:23Z"
         },
         {
           "id": 361685990,
           "name": "stock-charts",
           "description": "A library to display interactive charts in SwiftUI",
-          "url": "https://api.github.com/repos/denniscmartin/stock-charts"
+          "url": "https://github.com/denniscmartin/stock-charts",
+          "created_at": "2021-04-26T09:08:10Z"
         },
         {
           "id": 443329554,
           "name": "the-cube-project",
           "description": "The Cube Project is a set of geometric algorithmic NFT collections living in the Ethereum blockchain",
-          "url": "https://api.github.com/repos/denniscmartin/the-cube-project"
+          "url": "https://github.com/denniscmartin/the-cube-project",
+          "created_at": "2021-12-31T11:25:42Z"
         },
         {
           "id": 393002870,
           "name": "trades-demo",
           "description": "Demo app using StockCharts framework",
-          "url": "https://api.github.com/repos/denniscmartin/trades-demo"
+          "url": "https://github.com/denniscmartin/trades-demo",
+          "created_at": "2021-08-05T10:38:46Z"
         },
         {
           "id": 407647681,
           "name": "tweet-analysis",
           "description": "Serverless app to fetch & analyse tweets using AWS Comprehend",
-          "url": "https://api.github.com/repos/denniscmartin/tweet-analysis"
+          "url": "https://github.com/denniscmartin/tweet-analysis",
+          "created_at": "2021-09-17T18:48:11Z"
         }
       ]
     }

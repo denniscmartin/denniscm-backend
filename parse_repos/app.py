@@ -21,7 +21,8 @@ def lambda_handler(event, context):
                 'id': repo['id'],
                 'name': repo['name'],
                 'description': repo['description'],
-                'url': repo['url']
+                'url': repo['html_url'],
+                'created_at': repo['created_at']
             })
 
     return {

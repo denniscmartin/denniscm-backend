@@ -20,7 +20,8 @@ def lambda_handler(event, context):
                     'pk': repo['name'],
                     'sk': str(repo['id']),
                     'description': repo['description'],
-                    'url': repo['url']
+                    'url': repo['url'],
+                    'created_at': repo['created_at']
                 }
             )
 
