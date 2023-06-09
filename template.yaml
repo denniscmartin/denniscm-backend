@@ -53,6 +53,10 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
+      Cors:
+        AllowMethods: "'GET, POST, OPTIONS'"
+        AllowHeaders: "'content-type, x-api-key'"
+        AllowOrigin: "'*'"
       Models:
         Empty:
           type: object
