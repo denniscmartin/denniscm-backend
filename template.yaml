@@ -16,8 +16,6 @@ Globals:
     Timeout: 15
     MemorySize: 128
     Tracing: Active
-    Layers:
-      - !Ref DependenciesLayer
 
 Resources:
   StateMachine:
@@ -51,27 +49,18 @@ Resources:
           Permissions:
             - Write
 
-  DependenciesLayer:
-    Type: AWS::Serverless::LayerVersion
+  Api:
+    Type: AWS::Serverless::Api
     Properties:
-      ContentUri: dependencies/
-      Description: Collection of shared functions and classes
-      RetentionPolicy: Delete
-      CompatibleArchitectures:
-        - x86_64
-      CompatibleRuntimes:
-        - python3.7
+      StageName: Prod
+      Models:
+        Empty:
+          type: object
 
   ParseReposFunction:
       Type: AWS::Serverless::Function
       Properties:
         CodeUri: parse_repos/
-        Policies:
-          - Version: 2012-10-17
-            Statement:
-                Effect: Allow
-                Action: secretsmanager:GetSecretValue
-                Resource: !ImportValue DennisCMartinGithubSecretArn
 
   UploadReposFunction:
     Type: AWS::Serverless::Function
@@ -84,6 +73,25 @@ Resources:
             Id: DynamoTable
           Permissions:
             - Write
+
+  GetReposFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: get_repos/
+        Events:
+          GetReposEvent:
+            Type: Api
+            Properties:
+              RestApiId: !Ref Api
+              Path: /repos
+              Method: get
+      Connectors:
+        DynamoConnector:
+          Properties:
+            Destination:
+              Id: DynamoTable
+            Permissions:
+              - Read
 
   DynamoTable:
     Type: AWS::DynamoDB::Table
@@ -104,3 +112,14 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
+
+Outputs:
+  ApiId:
+    Description: The API Id of denniscm.com backend
+    Value: !Ref Api
+    Export:
+      Name: DennisCmBackendApiId
+
+  ApiUrl:
+    Description: The API url of denniscm.com backend
+    Value: !Sub "https://${Api}.execute-api.${AWS::Region}.amazonaws.com/Prod"

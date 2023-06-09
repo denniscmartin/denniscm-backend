@@ -18,7 +18,7 @@ def lambda_handler(event, context):
             batch.put_item(
                 Item={
                     'pk': repo['name'],
-                    'sk': repo['id'],
+                    'sk': str(repo['id']),
                     'description': repo['description'],
                     'url': repo['url']
                 }
@@ -26,9 +26,7 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
-        "body": {
-            json.dumps({
-                "message": "ok"
-            })
-        },
+        "body": json.dumps({
+            "message": "ok"
+        })
     }

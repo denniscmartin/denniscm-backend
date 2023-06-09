@@ -1,13 +1,8 @@
 import requests
-import json
-# noinspection PyUnresolvedReferences
-from common import get_secret
 
 
 url = f'https://api.github.com/users/denniscmartin/repos'
-github_secret = get_secret(secret_name='DennisCMartinGithubSecret', region_name='eu-central-1')
 headers = {
-    'Authorization': f"Bearer {github_secret['token']}",
     'Accept': 'application/vnd.github.v3+json',
     'X-GitHub-Api-Version': "2022-11-28"
 }
