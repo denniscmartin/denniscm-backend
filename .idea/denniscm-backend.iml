@@ -14,14 +14,14 @@
         <entry key="template.yaml">
           <value>
             <SyncSamConfig>
-              <option name="bucketName" value="sandbox-denniscm-api-source" />
+              <option name="bucketName" value="sandbox-deployment-bucket" />
               <option name="enabledCapabilities">
                 <list>
                   <option value="NAMED_IAM" />
                   <option value="AUTO_EXPAND" />
                 </list>
               </option>
-              <option name="stackName" value="DennisCmApi" />
+              <option name="stackName" value="DennisCm-Backend" />
               <option name="tags">
                 <map />
               </option>

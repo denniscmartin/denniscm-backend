@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: API for denniscm.com
+Description: API for denniscm.com frontend
 
 Conditions:
   CreateProdResources: !Equals
     - !Ref AWS::AccountId
-    - 672477575715 # General account ID (Production)
+    - 572540046516 # Dennis account ID (Production)
 
 Globals:
   Function:
@@ -13,140 +13,94 @@ Globals:
     Handler: app.lambda_handler
     Architectures:
       - x86_64
-    Timeout: 30
+    Timeout: 15
     MemorySize: 128
     Tracing: Active
+    Layers:
+      - !Ref DependenciesLayer
 
 Resources:
-  RestApi:
-    Type: AWS::Serverless::Api
+  StateMachine:
+    Type: AWS::Serverless::StateMachine
     Properties:
-      StageName: Prod
-      Cors:
-        AllowMethods: "'GET, POST, OPTIONS'"
-        AllowHeaders: "'content-type, x-api-key'"
-        AllowOrigin: "'*'"
-      Models:
-        Empty:
-          type: object
-
-  DennisCmBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !If
-        - CreateProdResources
-        - denniscm-data
-        - sandbox-denniscm-data
-
-  IndexObjectFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: index_object/
+      Tracing:
+        Enabled: true
+      DefinitionUri: statemachine/statemachine.asl.json
+      DefinitionSubstitutions:
+        ParseReposFunctionArn: !GetAtt ParseReposFunction.Arn
+        UploadReposFunctionArn: !GetAtt UploadReposFunction.Arn
       Events:
-        NewBlogPostEvent:
-          Type: S3
+        StateChange:
+          Type: ScheduleV2
           Properties:
-            Bucket: !Ref DennisCmBucket
-            Events: s3:ObjectCreated:*
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: inbox/
+            Name: ParseGithubReposSchedule
+            Description: Fetch Github repos for denniscm every day at 20:00
+            ScheduleExpression: cron(0 20 ? * MON-FRI *)
+            State: !If
+              - CreateProdResources
+              - ENABLED
+              - DISABLED
+            RetryPolicy:
+              MaximumRetryAttempts: 3
     Connectors:
-      DynamoConnector:
+      StateMachineConnector:
         Properties:
           Destination:
-            Id: IndexTable
+            - Id: ParseReposFunction
+            - Id: UploadReposFunction
           Permissions:
             - Write
-      S3Connector:
+
+  DependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: dependencies/
+      Description: Collection of shared functions and classes
+      RetentionPolicy: Delete
+      CompatibleArchitectures:
+        - x86_64
+      CompatibleRuntimes:
+        - python3.7
+
+  ParseReposFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: parse_repos/
+        Policies:
+          - Version: 2012-10-17
+            Statement:
+                Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !ImportValue DennisCMartinGithubSecretArn
+
+  UploadReposFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: upload_repos/
+    Connectors:
+      DynamoConnector:
         Properties:
           Destination:
-            Id: DennisCmBucket
+            Id: DynamoTable
           Permissions:
-            - Read
             - Write
 
-  ListPostsFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: list_posts/
-      Events:
-        GetPostsEvent:
-          Type: Api
-          Properties:
-            RestApiId: !Ref RestApi
-            Path: /listposts
-            Method: get
-    Connectors:
-      DynamoConnector:
-        Properties:
-          Destination:
-            Id: IndexTable
-          Permissions:
-            - Read
-
-  DownloadObjectFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: download_object/
-      Environment:
-        Variables:
-          BUCKET_NAME: !If
-            - CreateProdResources
-            - denniscm-data
-            - sandbox-denniscm-data
-      Events:
-        GetPostEvent:
-          Type: Api
-          Properties:
-            RestApiId: !Ref RestApi
-            Path: /download
-            Method: get
-            RequestParameters:
-              - method.request.querystring.object-key:
-                  Required: true
-            RequestModel:
-              Model: Empty
-              ValidateParameters: true
-    Connectors:
-      DynamoConnector:
-        Properties:
-          Destination:
-            Id: IndexTable
-          Permissions:
-            - Read
-
-  IndexTable:
+  DynamoTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: DennisCmIndex
+      TableName: GithubPublicRepos
       BillingMode: PAY_PER_REQUEST
-      DeletionProtectionEnabled: True
+      DeletionProtectionEnabled: !If
+        - CreateProdResources
+        - True
+        - False
       KeySchema:
-        - AttributeName: item_key
+        - AttributeName: pk
           KeyType: HASH
-        - AttributeName: item_name
+        - AttributeName: sk
           KeyType: RANGE
       AttributeDefinitions:
-        - AttributeName: item_key
+        - AttributeName: pk
           AttributeType: S
-        - AttributeName: item_name
+        - AttributeName: sk
           AttributeType: S
-      GlobalSecondaryIndexes:
-        - IndexName: gsiItemName
-          KeySchema:
-            - AttributeName: item_name
-              KeyType: HASH
-          Projection:
-            ProjectionType: ALL
-
-Outputs:
-  ListPostsEndpoint:
-    Description: "Endpoint to get posts"
-    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/listposts"
-
-  DownloadObjectEndpoint:
-    Description: "Endpoint to generate a presigned url to download an object"
-    Value: !Sub "https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/download"

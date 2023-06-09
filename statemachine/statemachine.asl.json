@@ -1,0 +1,15 @@
+{
+  "StartAt": "ParseRepos",
+  "States": {
+    "ParseRepos": {
+      "Type": "Task",
+      "Resource": "${ParseReposFunctionArn}",
+      "Next": "UploadRepos"
+    },
+    "UploadRepos": {
+      "Type": "Task",
+      "Resource": "${UploadReposFunctionArn}",
+      "End": true
+    }
+  }
+}
